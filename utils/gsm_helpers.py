@@ -37,20 +37,20 @@ def open_serial_terminal():
             line_constructor = ''
             while True:
                 serial_str = piSerial.readline().decode('utf-8')
-                if serial_str.endswith('\n\r'):
+                if serial_str.endswith('\r\n'):
                     line_constructor += serial_str[:-2]
                     line = line_constructor
                     line_constructor = ''
                     print(line)
-                    if serial_str.endswith('OK\n\r'):
+                    if serial_str == 'OK\r\n':
                         break
-                    if serial_str.endswith('ERROR\n\r'):
+                    if serial_str == 'ERROR\r\n':
                         break
                 else:
                     line_constructor += serial_str
-                    print('Still constructing output, waiting for \\n\\r chars...')
-                    print('Here is what has been received now:')
-                    print(serial_str)
+                    print('Still constructing output, waiting for \\r\\n chars...')
+                    # print('Here is what has been received now:')
+                    # print(serial_str)
                 sleep(1)
 
             cmd = input('Insert command (or press enter to quit): ')
