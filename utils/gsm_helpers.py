@@ -15,7 +15,8 @@ def get_unread_sms():
     with serial.Serial(SERIAL_PORT, baudrate=9600, timeout=5) as piSerial:
         sleep(1)
         print("Will write to serial.")
-        _write_to_serial(piSerial, 'AT+CMGL="REC UNREAD"\r\n')
+        # _write_to_serial(piSerial, 'AT+CMGL="REC UNREAD"\r\n')
+        _write_to_serial(piSerial, 'AT+CMGR=3\r\n')
         print("Written to serial.")
         # The response should be something like this:
 
