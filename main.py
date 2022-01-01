@@ -39,7 +39,7 @@ interface = [
 
 while True:
 
-    x = input('\n'.join(interface))
+    x = input('\n' + '\n'.join(interface))
 
     if int(x) > 0 and int(x) <= len(options):
         selected_action = options[int(x)-1][1]
