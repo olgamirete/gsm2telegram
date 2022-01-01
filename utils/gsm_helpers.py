@@ -13,30 +13,35 @@ def _write_to_serial(ser: serial.Serial, command: str):
 def get_unread_sms():
     #Open port with baud rate
     with serial.Serial(SERIAL_PORT, baudrate=9600, timeout=5) as piSerial:
+        sleep(3)
+        _write_to_serial(piSerial, 'AT\r\n')
         sleep(1)
-        print("Will write to serial.")
-        # _write_to_serial(piSerial, 'AT+CMGL="REC UNREAD"\r\n')
-        _write_to_serial(piSerial, 'AT+CMGR=3\r\n')
-        print("Written to serial.")
-        # The response should be something like this:
-
-        # +CMGL: 1,"REC UNREAD","+85291234567",,"07/02/18,00:05:10+32"
-        # Reading text messages is easy.
-        # +CMGL: 2,"REC UNREAD","+85291234567",,"07/02/18,00:07:22+32"
-                
         while True:
-            print(piSerial.readline().decode('utf-8'))
-        
-        # response_lines = piSerial.readlines()
-        # print(f"received {len(response_lines)} responses. Detail:")
+            line = piSerial.readline().decode('utf-8')
+            print(line)
+            if line == 'OK\r\n':
+                break
+            if line == 'ERROR\r\n':
+                break
+            sleep(1)
+        print('Correctly initialized communication!')
 
-        # for x in response_lines:
-            # print(x.decode())
-        
-        print("Finished printing responses!")
-        
-        # for i in range(len(response_lines)/2):
+        cmd = input('Insert command (or press enter to quit): ')
+        while cmd != '':
+            # 'AT+CMGL="REC UNREAD"\r\n'
+            
+            _write_to_serial(piSerial, f'{cmd}\r\n')
+            print("Written to serial!")
 
-        
-        # while True:
+            while True:
+                line = piSerial.readline().decode('utf-8')
+                print(line)
+                if line == 'OK\r\n':
+                    break
+                if line == 'ERROR\r\n':
+                    break
+                sleep(1)
 
+            cmd = input('Insert command (or press enter to quit): ')
+            
+        
