@@ -23,14 +23,14 @@ def get_unread_sms():
         # Reading text messages is easy.
         # +CMGL: 2,"REC UNREAD","+85291234567",,"07/02/18,00:07:22+32"
                 
-        # while True:
-            # print(piSerial.readline())
+        while True:
+            print(piSerial.readline().decode('utf-8'))
         
-        response_lines = piSerial.readlines()
-        print(f"received {len(response_lines)} responses. Detail:")
+        # response_lines = piSerial.readlines()
+        # print(f"received {len(response_lines)} responses. Detail:")
 
-        for x in response_lines:
-            print(x.decode())
+        # for x in response_lines:
+            # print(x.decode())
         
         print("Finished printing responses!")
         
