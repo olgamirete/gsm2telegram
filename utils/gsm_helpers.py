@@ -38,7 +38,7 @@ def _write_to_serial(ser: serial.Serial, command: str):
 def open_serial_terminal():
     with serial.Serial(SERIAL_PORT, baudrate=9600, timeout=5) as piSerial:
         sleep(3)
-        _write_to_serial(piSerial, 'AT\r\n')
+        _write_to_serial(piSerial, 'AT\r\n'.encode('utf-8'))
         sleep(1)
         while True:
             line = piSerial.readline().decode('utf-8')
@@ -83,11 +83,11 @@ def send_command(cmd: str, encoding_for_decoding: str = 'utf-8'):
 
     if not cmd.endswith('\r\n'):
         cmd += '\r\n'
-    cmd = cmd.encode('utf-8')
+    # cmd = cmd.encode('utf-8')
 
     with serial.Serial(SERIAL_PORT, baudrate=9600, timeout=5) as piSerial:
         sleep(3)
-        _write_to_serial(piSerial, 'AT\r\n')
+        _write_to_serial(piSerial, 'AT\r\n'.encode('utf-8'))
         sleep(1)
         while True:
             line = piSerial.readline().decode('utf-8')
