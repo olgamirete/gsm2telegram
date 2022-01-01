@@ -38,14 +38,14 @@ def open_serial_terminal():
                     line = line_constructor[:-2]
                     line_constructor = ''
                     print(line)
-                    if line == 'OK':
+                    if line.endswith('OK'):
                         break
-                    if line == 'ERROR':
+                    if line.endswith('ERROR'):
                         break
                 else:
                     print('Still constructing output, waiting for \\n\\r chars...')
-                    print('Here is what has been received so far:')
-                    print(line_constructor)
+                    # print('Here is what has been received so far:')
+                    # print(line_constructor)
                 sleep(1)
 
             cmd = input('Insert command (or press enter to quit): ')
