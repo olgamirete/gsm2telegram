@@ -31,9 +31,15 @@ options = [
 formatted_options = [f"{str(i+1)}. {options[i][0]}" for i in range(len(options))]
 formatted_options = '\n'.join(formatted_options)
 
+interface = [
+    '#-SIM800L Toolbox---------------------#',
+    formatted_options,
+    'Choose an option: '
+]
+
 while True:
 
-    x = input('Choose an option:\n' + formatted_options)
+    x = input('\n'.join(interface))
 
     options[int(x)]()
 
