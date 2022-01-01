@@ -12,7 +12,7 @@ class GSMInitializationError(Exception):
 def _write_to_serial(ser: serial.Serial, command: str):
     ser.write(command.encode('utf-8'))
 
-def get_unread_sms():
+def open_serial_terminal():
     #Open port with baud rate
     with serial.Serial(SERIAL_PORT, baudrate=9600, timeout=5) as piSerial:
         sleep(3)
@@ -47,5 +47,3 @@ def get_unread_sms():
                 sleep(1)
 
             cmd = input('Insert command (or press enter to quit): ')
-            
-        

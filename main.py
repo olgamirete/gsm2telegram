@@ -7,7 +7,7 @@ import utils.gsm_helpers as gsm_helpers
 #     except:
 #         pass
 
-gsm_helpers.get_unread_sms()
+gsm_helpers.open_serial_terminal()
 
 # telegram_helpers.send_message("test, holis3")
 
