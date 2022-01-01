@@ -18,7 +18,9 @@ def handle_read_sms():
         gsm_helpers.read_sms(sms_type)
         
 def handle_send_command():
-    cmd = input('Enter command to send: ')
+    cmd = ''
+    while cmd == '':
+        cmd = input('Enter command to send: ')
     output = gsm_helpers.send_command(cmd)
     print(output.text())
 
