@@ -44,6 +44,13 @@ def open_serial_terminal():
                         break
                 else:
                     print('Still constructing output, waiting for \\n\\r chars...')
+                    print('Here is what has been received so far:')
+                    print(line_constructor)
                 sleep(1)
 
             cmd = input('Insert command (or press enter to quit): ')
+
+def reset_module():
+    confirm = input('Do you really want to reset the GSM Module? (y/n): ')
+    if confirm.lower() == 'y':
+        raise NotImplemented
