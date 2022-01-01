@@ -41,8 +41,11 @@ while True:
 
     x = input('\n'.join(interface))
 
-    selected_action = options[int(x)][1]
-    selected_action()
+    if int(x) > 0 and int(x) <= len(options):
+        selected_action = options[int(x)-1][1]
+        selected_action()
+    else:
+        print('Please select a valid option.')
 
 # telegram_helpers.send_message("test, holis3")
 
