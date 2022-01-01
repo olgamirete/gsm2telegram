@@ -46,7 +46,7 @@ while True:
         selected_action = options[int(x)-1][1]
         selected_action()
     else:
-        print('Please select a valid option.')
+        print('\nPlease select a valid option.')
 
 # telegram_helpers.send_message("test, holis3")
 
