@@ -13,7 +13,9 @@ def get_unread_sms():
     #Open port with baud rate
     with serial.Serial(SERIAL_PORT, baudrate=9600, timeout=5) as piSerial:
         sleep(1)
+        print("Will write to serial.")
         _write_to_serial(piSerial, 'AT+CMGL="REC UNREAD"')
+        print("Written to serial.")
         # The response should be something like this:
 
         # +CMGL: 1,"REC UNREAD","+85291234567",,"07/02/18,00:05:10+32"
@@ -21,9 +23,13 @@ def get_unread_sms():
         # +CMGL: 2,"REC UNREAD","+85291234567",,"07/02/18,00:07:22+32"
                 
         response_lines = piSerial.readlines()
+        
+        print(f"received {len(response_lines)} responses. Detail:")
 
         for x in response_lines:
             print(x.decode())
+        
+        print("Finished printing responses!")
         
         # for i in range(len(response_lines)/2):
 
