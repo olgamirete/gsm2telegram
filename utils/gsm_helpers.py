@@ -8,6 +8,7 @@ GPIO.setmode(GPIO.BOARD)
 
 def _write_to_serial(ser: serial.Serial, command: str):
     ser.write(command.encode('utf-8'))
+    sleep(3)
 
 def get_unread_sms():
     #Open port with baud rate
