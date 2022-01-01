@@ -11,7 +11,6 @@ Using the following resources:
 * Software:
   * Pyhon 3.7 or higher: http://python.org/
   * Pyrogram (Telegram client for Python): https://github.com/pyrogram/pyrogram
-  * SIM800L drivers for Python: https://github.com/pythings/Drivers/blob/master/SIM800L.py
 
 * Hardware:
   * 1x Raspberry Pi Zero 2W board (https://www.raspberrypi.com/products/raspberry-pi-zero-2-w/).
