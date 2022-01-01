@@ -41,7 +41,8 @@ while True:
 
     x = input('\n'.join(interface))
 
-    options[int(x)]()
+    selected_action = options[int(x)][1]
+    selected_action()
 
 # telegram_helpers.send_message("test, holis3")
 
