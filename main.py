@@ -41,7 +41,8 @@ while True:
 
     x = input('\n' + '\n'.join(interface))
 
-    if int(x) > 0 and int(x) <= len(options):
+    if x in [str(i+1) for i in range(len(options))]:
+        i = int(x)
         selected_action = options[int(x)-1][1]
         selected_action()
     else:
