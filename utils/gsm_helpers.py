@@ -20,7 +20,6 @@ def get_unread_sms():
         sleep(1)
         while True:
             line = piSerial.readline().decode('utf-8')
-            # print(line)
             if line == 'OK\r\n':
                 print('Correctly initialized communication with GSM module!')
                 break
