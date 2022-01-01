@@ -9,6 +9,9 @@ GPIO.setmode(GPIO.BOARD)
 class GSMInitializationError(Exception):
     pass
 
+# class GSMError(Exception):
+#     pass
+
 def _write_to_serial(ser: serial.Serial, command: str):
     ser.write(command.encode('utf-8'))
 
@@ -33,16 +36,18 @@ def open_serial_terminal():
             sleep(1)
             line_constructor = ''
             while True:
-                line_constructor += piSerial.readline().decode('utf-8')
-                if line_constructor.endswith('\n\r'):
-                    line = line_constructor[:-2]
+                serial_str = piSerial.readline().decode('utf-8')
+                if serial_str.endswith('\n\r'):
+                    line_constructor += serial_str[:-2]
+                    line = line_constructor
                     line_constructor = ''
                     print(line)
-                    if line.endswith('OK'):
+                    if serial_str == 'OK\n\r':
                         break
-                    if line.endswith('ERROR'):
+                    if serial_str == 'ERROR\n\r':
                         break
                 else:
+                    line_constructor += serial_str
                     print('Still constructing output, waiting for \\n\\r chars...')
                     # print('Here is what has been received so far:')
                     # print(line_constructor)
