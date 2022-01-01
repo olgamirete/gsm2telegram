@@ -9,12 +9,12 @@ As this is still in early development stages, I have not yet published instructi
 Using the following resources:
 
 * Software:
-  * Pyhon 3.7 or higher.
+  * Pyhon 3.7 or higher: http://python.org/
   * Pyrogram (Telegram client for Python): https://github.com/pyrogram/pyrogram
   * SIM800L drivers for Python: https://github.com/pythings/Drivers/blob/master/SIM800L.py
 
 * Hardware:
-  * 1x Raspberry Pi Zero 2W board.
+  * 1x Raspberry Pi Zero 2W board (https://www.raspberrypi.com/products/raspberry-pi-zero-2-w/).
   * 2x DC-DC converters (step-down).
   * 1x Bi-directional Level shifter.
   * 1x SIM800L module.
