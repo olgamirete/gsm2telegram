@@ -7,6 +7,10 @@ from os import getenv
 load_dotenv()
 
 SERIAL_PORT = getenv("SERIAL_PORT")
+SERIAL_BAUD = 9600
+SERIAL_TIMEOUT = 5
+PAUSE_AFTER_SERIAL_OPEN = 2
+PAUSE_BEFORE_SERIAL_READ = .5
 
 class SMS_STATUS:
     ALL = "ALL"
@@ -36,10 +40,10 @@ def _write_to_serial(ser: serial.Serial, command: str):
     ser.write(command.encode('utf-8'))
 
 def open_serial_terminal():
-    with serial.Serial(SERIAL_PORT, baudrate=9600, timeout=5) as piSerial:
-        sleep(3)
+    with serial.Serial(SERIAL_PORT, baudrate=SERIAL_BAUD, timeout=SERIAL_TIMEOUT) as piSerial:
+        sleep(PAUSE_AFTER_SERIAL_OPEN)
         _write_to_serial(piSerial, 'AT\r\n')
-        sleep(1)
+        sleep(PAUSE_BEFORE_SERIAL_READ)
         while True:
             line = piSerial.readline().decode('utf-8')
             if line == 'OK\r\n':
@@ -47,12 +51,12 @@ def open_serial_terminal():
                 break
             if line == 'ERROR\r\n':
                 raise GSMInitializationError
-            sleep(1)
+            sleep(PAUSE_BEFORE_SERIAL_READ)
 
         cmd = input('Insert command (or press enter to quit): ')
         while cmd != '':
             _write_to_serial(piSerial, f'{cmd}\r\n')
-            sleep(1)
+            sleep(PAUSE_BEFORE_SERIAL_READ)
             line_constructor = ''
             while True:
                 serial_str = piSerial.readline().decode('utf-8')
@@ -68,9 +72,7 @@ def open_serial_terminal():
                 else:
                     line_constructor += serial_str
                     print('Still constructing output, waiting for \\r\\n chars...')
-                    # print('Here is what has been received now:')
-                    # print(serial_str)
-                sleep(1)
+                sleep(PAUSE_BEFORE_SERIAL_READ)
 
             cmd = input('Insert command (or press enter to quit): ')
 
@@ -84,10 +86,10 @@ def send_command(cmd: str, encoding_for_decoding: str = 'utf-8'):
     if not cmd.endswith('\r\n'):
         cmd += '\r\n'
     
-    with serial.Serial(SERIAL_PORT, baudrate=9600, timeout=5) as piSerial:
-        sleep(3)
+    with serial.Serial(SERIAL_PORT, baudrate=SERIAL_BAUD, timeout=SERIAL_TIMEOUT) as piSerial:
+        sleep(PAUSE_AFTER_SERIAL_OPEN)
         _write_to_serial(piSerial, 'AT\r\n')
-        sleep(1)
+        sleep(PAUSE_BEFORE_SERIAL_READ)
         while True:
             line = piSerial.readline().decode('utf-8')
             if line == 'OK\r\n':
@@ -95,10 +97,10 @@ def send_command(cmd: str, encoding_for_decoding: str = 'utf-8'):
                 break
             if line == 'ERROR\r\n':
                 raise GSMInitializationError
-            sleep(1)
+            sleep(PAUSE_BEFORE_SERIAL_READ)
         
         _write_to_serial(piSerial, cmd)
-        sleep(1)
+        sleep(PAUSE_BEFORE_SERIAL_READ)
 
         output = AT_COMMAND_OUTPUT()
         line_constructor = ''
@@ -118,7 +120,7 @@ def send_command(cmd: str, encoding_for_decoding: str = 'utf-8'):
             else:
                 line_constructor += serial_str
                 # Still constructing output, waiting for \\r\\n chars...
-            sleep(1)
+            sleep(PAUSE_BEFORE_SERIAL_READ)
         return output
 
 def read_sms(filter_by_status: SMS_STATUS = SMS_STATUS.UNREAD):
