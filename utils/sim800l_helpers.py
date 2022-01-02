@@ -130,7 +130,13 @@ def send_command(cmd: str, encoding_for_decoding: str = 'utf-8'):
         line_constructor = ''
         while True:
             # serial_str = piSerial.readline().decode(encoding_for_decoding)
-            serial_str = piSerial.readline().decode()
+            serial_bytes = piSerial.readline()
+            try:
+                serial_str = serial_bytes.decode()
+            except UnicodeDecodeError as e:
+                print('Could not decode bytes from serial. Bytes received:')
+                print(serial_bytes)
+                print(f'----------\n{e}\n----------')
             if serial_str.endswith('\r\n'):
                 line_constructor += serial_str[:-2]
                 line = line_constructor
