@@ -39,7 +39,7 @@ class AT_COMMAND_OUTPUT:
     def text(self):
         return '\n'.join(self._lines)
 
-class Received_SMS():
+class SMS_Info():
     def __init__(self, text: str = None, sender: str = None, timestamp: str = None, index: int = None, status: SMS_STATUS = None) -> None:
         self.text = text
         self.sender = sender
@@ -145,7 +145,7 @@ def send_command(cmd: str, encoding_for_decoding: str = 'utf-8'):
             sleep(PAUSE_BEFORE_SERIAL_READ)
         return output
 
-def read_sms(filter_by_status: SMS_STATUS = SMS_STATUS.UNREAD, flag_text_mode: bool = True):
+def read_sms(filter_by_status: SMS_STATUS = SMS_STATUS.UNREAD, flag_text_mode: bool = True) -> list[SMS_Info]:
     cmd = f'AT+CMGF={1 if flag_text_mode == True else 0}'
     print(f'Setting mode with {cmd}...')
     output = send_command(cmd)
@@ -171,14 +171,15 @@ def read_sms(filter_by_status: SMS_STATUS = SMS_STATUS.UNREAD, flag_text_mode: b
                     print(f'Message at array index {i} is None.')
             print('----------------------------------------------------')
             print('Finished printing messages.\n')
+            return messages
         else:
             print('No messages found.')
     else:
         print('Error while setting the SMS mode. See answer from GSM module:')
         print(output.text())
 
-def __parse_sms(serial_lines: list[str]) -> list[Received_SMS]:
-    list_of_sms: list[Received_SMS] = []
+def __parse_sms(serial_lines: list[str]) -> list[SMS_Info]:
+    list_of_sms: list[SMS_Info] = []
     sms = None
     for i in range(len(serial_lines)):
         line = serial_lines[i]
@@ -195,7 +196,7 @@ def __parse_sms(serial_lines: list[str]) -> list[Received_SMS]:
             timestamp = f'{line_split_by_comma[-2]}T{line_split_by_comma[-1]}'
             timestamp = timestamp.replace('/', '-')
             
-            sms = Received_SMS(
+            sms = SMS_Info(
                 text='',
                 sender=sender,
                 timestamp=timestamp,
