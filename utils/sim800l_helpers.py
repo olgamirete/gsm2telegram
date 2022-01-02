@@ -161,14 +161,11 @@ def read_sms(filter_by_status: SMS_STATUS = SMS_STATUS.UNREAD, flag_text_mode: b
             for i in range(len(messages)):
                 msg = messages[i]
                 print('----------------------------------------------------')
-                if msg != None:
-                    print(f'Timestamp:   {msg.timestamp}')
-                    print(f'Status:      {msg.status}')
-                    print(f'Index:       {msg.index}')
-                    print(f'From:        {msg.sender}')
-                    print(f'SMS Content:\n{msg.text}')
-                else:
-                    print(f'Message at array index {i} is None.')
+                print(f'Timestamp:   {msg.timestamp}')
+                print(f'Status:      {msg.status}')
+                print(f'Index:       {msg.index}')
+                print(f'From:        {msg.sender}')
+                print(f'SMS Content:\n{msg.text}')
             print('----------------------------------------------------')
             print('Finished printing messages.\n')
             return messages
@@ -205,30 +202,31 @@ def __parse_sms(serial_lines: list[str]) -> list[SMS_Info]:
             )
 
         else:
-            if sms == None and line != None:
-                print('Unhandled line found. See line below:')
-                print(line)
-            elif line != 'OK' and line != 'ERROR':
-                sms.text += line
-    list_of_sms.append(sms)
+            if line != 'OK' and line != 'ERROR':
+                if sms == None and line != None:
+                    print('Unhandled line found. See line below:')
+                    print(line)
+                else:
+                    sms.text += line
+    if sms != None:
+        list_of_sms.append(sms)
 
     if len(list_of_sms) > 0:
         hex_pattern_str = r'^(?P<content>([0-9A-F]{2})+)(\r\n)?$'
         hex_pattern = re.compile(hex_pattern_str)
         for sms in list_of_sms:
-            if sms != None:
-                matches = hex_pattern.search(sms.text)
+            matches = hex_pattern.search(sms.text)
+            try:
+                is_hex = matches.groupdict()['content'] != None
+            except AttributeError:
+                is_hex = False
+            
+            if is_hex == True:
                 try:
-                    is_hex = matches.groupdict()['content'] != None
-                except AttributeError:
-                    is_hex = False
-                
-                if is_hex == True:
-                    try:
-                        sms.text = bytes.fromhex(sms.text).decode('utf-16-be')
-                    except UnicodeDecodeError:
-                        # We tried to decode the sms, but we couldn't. In this case,
-                        # we just leave the original text received and let the user
-                        # decide what they want to do
-                        pass
+                    sms.text = bytes.fromhex(sms.text).decode('utf-16-be')
+                except UnicodeDecodeError:
+                    # We tried to decode the sms, but we couldn't. In this case,
+                    # we just leave the original text received and let the user
+                    # decide what they want to do
+                    pass
     return list_of_sms
