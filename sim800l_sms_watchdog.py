@@ -12,7 +12,7 @@ try:
     if len(unread_sms) > 0:
         telegram_helpers.send_message('You\'ve got mail!')
         with open(LOG_FILE, 'a', encoding='utf-8') as f:
-            f.write(f'\n{datetime.now().isoformat()}: Found {len(unread_sms)} message/s.')
+            f.write(f'{datetime.now().isoformat()}: Found {len(unread_sms)} message/s.\n')
         for sms in unread_sms:
             msg_for_telegram = ''
             msg_for_telegram += f'```Timestamp:   ```{sms.timestamp}\n'
@@ -24,7 +24,7 @@ try:
         sleep(1)
     else:
         with open(LOG_FILE, 'a', encoding='utf-8') as f:
-            f.write(f'\n{datetime.now().isoformat()}: No messages found.')
+            f.write(f'{datetime.now().isoformat()}: No messages found.\n')
 except Exception as e:
     msg_constructor = [
         'Error while checking for new sms messages.',
@@ -33,6 +33,6 @@ except Exception as e:
     ]
     error_msg = '\n\n'.join(msg_constructor)
     with open(ERROR_LOG_FILE, 'a', encoding='utf-8') as f:
-        f.write(f'\n{datetime.now().isoformat()}: Error while checking for new SMS. See detail:\n{error_msg}')
+        f.write(f'{datetime.now().isoformat()}: Error while checking for new SMS. See detail:\n{error_msg}\n')
     telegram_helpers.send_message(error_msg)
     
