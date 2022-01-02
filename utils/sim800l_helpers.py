@@ -1,6 +1,6 @@
 import serial
 import RPi.GPIO as GPIO
-from time import sleep, time
+from time import sleep
 from dotenv import load_dotenv
 from os import getenv
 
@@ -12,9 +12,13 @@ SERIAL_TIMEOUT = 5
 PAUSE_AFTER_SERIAL_OPEN = 2
 PAUSE_BEFORE_SERIAL_READ = .5
 
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(17, GPIO.OUT) # RST pin
-GPIO.output(17, 1)       # Normally high.
+# GPIO.setmode(GPIO.BCM)
+# RST_PIN = 17
+GPIO.setmode(GPIO.BOARD)
+RST_PIN = 11
+
+GPIO.setup(RST_PIN, GPIO.OUT) # RST pin
+GPIO.output(RST_PIN, 1)       # Normally high.
 
 class SMS_STATUS:
     ALL = "ALL"
@@ -54,8 +58,7 @@ def open_serial_terminal():
     with serial.Serial(SERIAL_PORT, baudrate=SERIAL_BAUD, timeout=SERIAL_TIMEOUT) as piSerial:
         print('Serial port was opened! Doing initial handshake with module...')
         sleep(PAUSE_AFTER_SERIAL_OPEN)
-        # _write_to_serial(piSerial, 'AT\r\n')
-        _write_to_serial(piSerial, 'AT+CFUN=?\r\n')
+        _write_to_serial(piSerial, 'AT\r\n')
         sleep(PAUSE_BEFORE_SERIAL_READ)
         print('Sent command for initial handshake with module! Awaiting reply...')
         while True:
@@ -94,9 +97,9 @@ def open_serial_terminal():
 def reset_module():
     confirm = input('Do you really want to reset the GSM Module? (y/n): ')
     if confirm.lower() == 'y':
-        GPIO.output(17, 0)
+        GPIO.output(RST_PIN, 0)
         sleep(.15)
-        GPIO.output(17, 1)
+        GPIO.output(RST_PIN, 1)
         sleep(.8)
         print('Sent pulse for resetting module!')
 
