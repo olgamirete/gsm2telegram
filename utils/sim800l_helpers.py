@@ -215,7 +215,7 @@ def __parse_sms(serial_lines: list[str]) -> list[Received_SMS]:
         hex_pattern_str = r'^(?P<content>([0-9A-F]{2})+)(\r\n)?$'
         hex_pattern = re.compile(hex_pattern_str)
         for sms in list_of_sms:
-            matches = hex_pattern.search(sms)
+            matches = hex_pattern.search(sms.text)
             try:
                 is_hex = matches.groupdict()['content'] != None
             except AttributeError:
@@ -223,7 +223,7 @@ def __parse_sms(serial_lines: list[str]) -> list[Received_SMS]:
             
             if is_hex == True:
                 try:
-                    sms.text = bytes.fromhex(sms).decode('utf-16-be')
+                    sms.text = bytes.fromhex(sms.text).decode('utf-16-be')
                 except UnicodeDecodeError:
                     # We tried to decode the sms, but we couldn't. In this case,
                     # we just leave the original text received and let the user
