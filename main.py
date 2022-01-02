@@ -41,9 +41,8 @@ interface = [
     '\nChoose an option: '
 ]
 
-while True:
-
-    try:
+try:
+    while True:
         x = input('\n' + '\n'.join(interface))
 
         if x in [str(i+1) for i in range(len(options))]:
@@ -52,11 +51,11 @@ while True:
             selected_action()
         else:
             print('\nPlease select a valid option.')
-    except KeyboardInterrupt:
-        print('Keyboard interrput!')
+except KeyboardInterrupt:
+    print('Keyboard interrput!')
     
-    finally:
-        GPIO.cleanup()
+finally:
+    GPIO.cleanup()
 
 # telegram_helpers.send_message("test, holis3")
 
