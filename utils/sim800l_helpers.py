@@ -147,10 +147,10 @@ def send_command(cmd: str, encoding_for_decoding: str = 'utf-8'):
 
 def read_sms(filter_by_status: SMS_STATUS = SMS_STATUS.UNREAD, flag_text_mode: bool = True):
     cmd = f'AT+CMGF={1 if flag_text_mode == True else 0}'
-    print(f'Setting {cmd}...')
+    print(f'Setting mode with {cmd}...')
     output = send_command(cmd)
-    print('Finished configuring AT+CMGF!')
     if output.status == 'OK':
+        print('Finished configuring AT+CMGF!')
         print('Retrieving messages...')
         output = send_command(f'AT+CMGL="{filter_by_status}"')
         print('Finished retrieving messages! Now parsing...')
