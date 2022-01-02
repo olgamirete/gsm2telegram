@@ -1,5 +1,4 @@
 import RPi.GPIO as GPIO
-import utils.telegram_helpers as telegram_helpers
 import utils.sim800l_helpers as sim800l_helpers
 
 def handle_read_sms():
