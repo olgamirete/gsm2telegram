@@ -1,6 +1,6 @@
 import serial
 import RPi.GPIO as GPIO
-from time import sleep
+from time import sleep, time
 from dotenv import load_dotenv
 from os import getenv
 
@@ -11,6 +11,8 @@ SERIAL_BAUD = 9600
 SERIAL_TIMEOUT = 5
 PAUSE_AFTER_SERIAL_OPEN = 2
 PAUSE_BEFORE_SERIAL_READ = .5
+
+GPIO.setmode(GPIO.BOARD)
 
 class SMS_STATUS:
     ALL = "ALL"
@@ -31,7 +33,13 @@ class AT_COMMAND_OUTPUT:
     def text(self):
         return '\n'.join(self._lines)
 
-GPIO.setmode(GPIO.BOARD)
+class Received_SMS():
+    def __init__(self, text: str = None, sender: str = None, timestamp: str = None, index: int = None, status: SMS_STATUS = None) -> None:
+        self.text = text
+        self.sender = sender
+        self.timestamp = timestamp
+        self.index = index
+        self.status = status
 
 class GSMInitializationError(Exception):
     pass
@@ -130,7 +138,56 @@ def read_sms(filter_by_status: SMS_STATUS = SMS_STATUS.UNREAD, flag_text_mode: b
         output = send_command('AT+CMGF=0')
     if output.status == 'OK':
         output = send_command(f'AT+CMGL="{filter_by_status}"')
+        messages = __parse_sms(output._lines)
+        print(f'Found {len(messages)} message/s.')
+        if len(messages) > 0:
+            for i in range(len(messages)):
+                msg = messages[i]
+                print('----------------------------------------------------')
+                print(f'Timestamp:\t{msg.timestamp}')
+                print(f'Status:\t{msg.status}')
+                print(f'Index:\t{msg.index}')
+                print(f'From:\t{msg.sender}')
+                print(f'SMS Content:\n{msg.text}')
+        
         print(output.text())
     else:
         print('Error while setting the SMS mode. See answer from GSM module:')
         print(output.text())
+
+def __parse_sms(serial_lines: list[str]) -> list[Received_SMS]:
+    list_of_sms = []
+    sms = None
+    for i in range(len(serial_lines)):
+        line = serial_lines[i]
+        if line.startswith('+CMGL: '):
+            
+            if sms != None:
+                list_of_sms.append(sms)
+                sms = None
+
+            line_split_by_comma = line.split(',')
+            
+            index = line[8:line.find(',')]
+            status = line_split_by_comma[1].replace('"', '')
+            sender = line_split_by_comma[2].replace('"', '')
+            timestamp = f'{line_split_by_comma[-2]}T{line_split_by_comma[-1]}'
+            timestamp = timestamp.replace('/', '-')
+            
+            sms = Received_SMS(
+                text='',
+                sender=sender,
+                timestamp=timestamp,
+                index=index,
+                status=status
+            )
+        else:
+            if sms == None:
+                print('Unhandled line found. See line below:')
+                print(line)
+            else:
+                sms.text += line
+    list_of_sms.append(sms)
+    return list_of_sms
+            
+
