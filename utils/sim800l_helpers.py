@@ -131,26 +131,35 @@ def send_command(cmd: str, encoding_for_decoding: str = 'utf-8'):
         while True:
             # serial_str = piSerial.readline().decode(encoding_for_decoding)
             serial_bytes = piSerial.readline()
-            try:
-                serial_str = serial_bytes.decode()
-            except UnicodeDecodeError as e:
+            for codec in ['utf-8', 'latin-1', 'utf-16-be']:
+                flag_decoding_successful = False
+                try:
+                    serial_str = serial_bytes.decode(codec)
+                    flag_decoding_successful = True
+                except UnicodeDecodeError as e:
+                    pass
+                if flag_decoding_successful == True:
+                    break
+                
+            if flag_decoding_successful != True:
                 print('Could not decode bytes from serial. Bytes received:')
                 print(serial_bytes)
                 print(f'----------\n{e}\n----------')
-            if serial_str.endswith('\r\n'):
-                line_constructor += serial_str[:-2]
-                line = line_constructor
-                line_constructor = ''
-                output.addLine(line)
-                if serial_str == 'OK\r\n':
-                    output.setStatus('OK')
-                    break
-                if serial_str == 'ERROR\r\n':
-                    output.setStatus('ERROR')
-                    break
             else:
-                line_constructor += serial_str
-                # Still constructing output, waiting for \\r\\n chars...
+                if serial_str.endswith('\r\n'):
+                    line_constructor += serial_str[:-2]
+                    line = line_constructor
+                    line_constructor = ''
+                    output.addLine(line)
+                    if serial_str == 'OK\r\n':
+                        output.setStatus('OK')
+                        break
+                    if serial_str == 'ERROR\r\n':
+                        output.setStatus('ERROR')
+                        break
+                else:
+                    line_constructor += serial_str
+                    # Still constructing output, waiting for \\r\\n chars...
             sleep(PAUSE_BEFORE_SERIAL_READ)
         return output
 
