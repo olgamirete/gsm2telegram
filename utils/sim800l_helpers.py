@@ -123,6 +123,14 @@ def send_command(cmd: str, encoding_for_decoding: str = 'utf-8'):
             sleep(PAUSE_BEFORE_SERIAL_READ)
         return output
 
-def read_sms(filter_by_status: SMS_STATUS = SMS_STATUS.UNREAD):
-    output = send_command(f'AT+CMGL="{filter_by_status}"')
-    print(output.text())
+def read_sms(filter_by_status: SMS_STATUS = SMS_STATUS.UNREAD, flag_text_mode: bool = True):
+    if flag_text_mode == True:
+        output = send_command('AT+CMGF=1')
+    else:
+        output = send_command('AT+CMGF=0')
+    if output.status == 'OK':
+        output = send_command(f'AT+CMGL="{filter_by_status}"')
+        print(output.text())
+    else:
+        print('Error while setting the SMS mode. See answer from GSM module:')
+        print(output.text())
