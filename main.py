@@ -4,16 +4,16 @@ import utils.sim800l_helpers as sim800l_helpers
 def handle_read_sms():
     sms_type = ''
     while sms_type.lower() not in ['all', 'read', 'unread']:
-        
-        sms_type = sms_type.lower()
         sms_type = input('Read All / Read / Unread? ')
+    
+    sms_type = sms_type.lower()
 
-        if sms_type == 'all':
-            sms_type = sim800l_helpers.SMS_STATUS.ALL
-        elif sms_type == 'read':
-            sms_type = sim800l_helpers.SMS_STATUS.READ
-        elif sms_type == 'unread':
-            sms_type = sim800l_helpers.SMS_STATUS.UNREAD
+    if sms_type == 'all':
+        sms_type = sim800l_helpers.SMS_STATUS.ALL
+    elif sms_type == 'read':
+        sms_type = sim800l_helpers.SMS_STATUS.READ
+    elif sms_type == 'unread':
+        sms_type = sim800l_helpers.SMS_STATUS.UNREAD
         
     sim800l_helpers.read_sms(sms_type)
         
