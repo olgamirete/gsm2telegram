@@ -12,7 +12,7 @@ SERIAL_TIMEOUT = 5
 PAUSE_AFTER_SERIAL_OPEN = 2
 PAUSE_BEFORE_SERIAL_READ = .5
 
-GPIO.setmode(GPIO.BOARD)
+GPIO.setmode(GPIO.BCM)
 GPIO.setup(17, GPIO.OUT) # RST pin
 GPIO.output(17, 1)       # Normally high.
 
