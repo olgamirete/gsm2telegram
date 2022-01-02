@@ -79,19 +79,33 @@ def open_serial_terminal():
             sleep(PAUSE_BEFORE_SERIAL_READ)
             line_constructor = ''
             while True:
-                serial_str = piSerial.readline().decode('utf-8')
-                if serial_str.endswith('\r\n'):
-                    line_constructor += serial_str[:-2]
-                    line = line_constructor
-                    line_constructor = ''
-                    print(line)
-                    if serial_str == 'OK\r\n':
+                serial_bytes = piSerial.readline()
+                flag_decoding_successful = False
+                for codec in ['utf-8', 'latin-1', 'utf-16-be']:
+                    try:
+                        serial_str = serial_bytes.decode(codec)
+                        flag_decoding_successful = True
                         break
-                    if serial_str == 'ERROR\r\n':
-                        break
+                    except UnicodeDecodeError as e:
+                        pass
+                    
+                if flag_decoding_successful != True:
+                    print('Could not decode bytes from serial. Bytes received:')
+                    print(serial_bytes)
+                    print(f'----------\n{e}\n----------')
                 else:
-                    line_constructor += serial_str
-                    print('Still constructing output, waiting for \\r\\n chars...')
+                    if serial_str.endswith('\r\n'):
+                        line_constructor += serial_str[:-2]
+                        line = line_constructor
+                        line_constructor = ''
+                        print(line)
+                        if serial_str == 'OK\r\n':
+                            break
+                        if serial_str == 'ERROR\r\n':
+                            break
+                    else:
+                        line_constructor += serial_str
+                        print('Still constructing output, waiting for \\r\\n chars...')
                 sleep(PAUSE_BEFORE_SERIAL_READ)
 
             cmd = input('Insert command (or press enter to quit): ')
@@ -131,15 +145,14 @@ def send_command(cmd: str, encoding_for_decoding: str = 'utf-8'):
         while True:
             # serial_str = piSerial.readline().decode(encoding_for_decoding)
             serial_bytes = piSerial.readline()
+            flag_decoding_successful = False
             for codec in ['utf-8', 'latin-1', 'utf-16-be']:
-                flag_decoding_successful = False
                 try:
                     serial_str = serial_bytes.decode(codec)
                     flag_decoding_successful = True
+                    break
                 except UnicodeDecodeError as e:
                     pass
-                if flag_decoding_successful == True:
-                    break
                 
             if flag_decoding_successful != True:
                 print('Could not decode bytes from serial. Bytes received:')
