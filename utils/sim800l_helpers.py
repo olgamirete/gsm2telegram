@@ -54,7 +54,8 @@ def open_serial_terminal():
     with serial.Serial(SERIAL_PORT, baudrate=SERIAL_BAUD, timeout=SERIAL_TIMEOUT) as piSerial:
         print('Serial port was opened! Doing initial handshake with module...')
         sleep(PAUSE_AFTER_SERIAL_OPEN)
-        _write_to_serial(piSerial, 'AT\r\n')
+        # _write_to_serial(piSerial, 'AT\r\n')
+        _write_to_serial(piSerial, 'AT+CFUN=?\r\n')
         sleep(PAUSE_BEFORE_SERIAL_READ)
         print('Sent command for initial handshake with module! Awaiting reply...')
         while True:
