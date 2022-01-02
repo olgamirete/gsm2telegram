@@ -165,8 +165,10 @@ def read_sms(filter_by_status: SMS_STATUS = SMS_STATUS.UNREAD, flag_text_mode: b
                 print(f'Index:\t{msg.index}')
                 print(f'From:\t{msg.sender}')
                 print(f'SMS Content:\n{msg.text}')
-        
-        print(output.text())
+            print('----------------------------------------------------')
+            print('Finished printing messages.\n')
+        else:
+            print('No messages found.')
     else:
         print('Error while setting the SMS mode. See answer from GSM module:')
         print(output.text())
