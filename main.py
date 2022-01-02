@@ -1,5 +1,5 @@
 import utils.telegram_helpers as telegram_helpers
-import utils.gsm_helpers as gsm_helpers
+import utils.sim800l_helpers as sim800l_helpers
 
 def handle_read_sms():
     sms_type = ''
@@ -9,23 +9,23 @@ def handle_read_sms():
         sms_type = input('Read All / Read / Unread? ')
 
         if sms_type == 'all':
-            sms_type = gsm_helpers.SMS_STATUS.ALL
+            sms_type = sim800l_helpers.SMS_STATUS.ALL
         elif sms_type == 'read':
-            sms_type = gsm_helpers.SMS_STATUS.READ
+            sms_type = sim800l_helpers.SMS_STATUS.READ
         elif sms_type == 'unread':
-            sms_type = gsm_helpers.SMS_STATUS.UNREAD
+            sms_type = sim800l_helpers.SMS_STATUS.UNREAD
         
-        gsm_helpers.read_sms(sms_type)
+        sim800l_helpers.read_sms(sms_type)
         
 def handle_send_command():
     cmd = ''
     while cmd == '':
         cmd = input('Enter command to send: ')
-    output = gsm_helpers.send_command(cmd)
+    output = sim800l_helpers.send_command(cmd)
     print(output.text())
 
 options = [
-    ["Open serial terminal", gsm_helpers.open_serial_terminal],
+    ["Open serial terminal", sim800l_helpers.open_serial_terminal],
     ["Read sms", handle_read_sms],
     ["Send command", handle_send_command]
 ]
