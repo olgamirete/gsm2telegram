@@ -189,7 +189,7 @@ def __parse_sms(serial_lines: list[str]) -> list[Received_SMS]:
 
             line_split_by_comma = line.split(',')
             
-            index = line[8:line.find(',')]
+            index = line_split_by_comma[1].split(' ')[1]
             status = line_split_by_comma[1].replace('"', '')
             sender = line_split_by_comma[2].replace('"', '')
             timestamp = f'{line_split_by_comma[-2]}T{line_split_by_comma[-1]}'
