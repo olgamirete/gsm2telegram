@@ -160,11 +160,14 @@ def read_sms(filter_by_status: SMS_STATUS = SMS_STATUS.UNREAD, flag_text_mode: b
             for i in range(len(messages)):
                 msg = messages[i]
                 print('----------------------------------------------------')
-                print(f'Timestamp:\t{msg.timestamp}')
-                print(f'Status:\t{msg.status}')
-                print(f'Index:\t{msg.index}')
-                print(f'From:\t{msg.sender}')
-                print(f'SMS Content:\n{msg.text}')
+                if msg != None:
+                    print(f'Timestamp: {msg.timestamp}')
+                    print(f'Status:    {msg.status}')
+                    print(f'Index:     {msg.index}')
+                    print(f'From:      {msg.sender}')
+                    print(f'SMS Content:\n{msg.text}')
+                else:
+                    print(f'Message at array index {i} is None.')
             print('----------------------------------------------------')
             print('Finished printing messages.\n')
         else:
