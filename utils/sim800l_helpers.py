@@ -137,8 +137,11 @@ def read_sms(filter_by_status: SMS_STATUS = SMS_STATUS.UNREAD, flag_text_mode: b
     else:
         output = send_command('AT+CMGF=0')
     if output.status == 'OK':
+        print('Retrieving messages...')
         output = send_command(f'AT+CMGL="{filter_by_status}"')
+        print('Finished retrieving messages! Now parsing...')
         messages = __parse_sms(output._lines)
+        print('Finished parsing messages! See results:')
         print(f'Found {len(messages)} message/s.')
         if len(messages) > 0:
             for i in range(len(messages)):
