@@ -13,6 +13,8 @@ PAUSE_AFTER_SERIAL_OPEN = 2
 PAUSE_BEFORE_SERIAL_READ = .5
 
 GPIO.setmode(GPIO.BOARD)
+GPIO.setup(17, GPIO.OUT) # RST pin
+GPIO.output(17, 1)       # Normally high.
 
 class SMS_STATUS:
     ALL = "ALL"
@@ -59,8 +61,6 @@ def open_serial_terminal():
                 break
             if line == 'ERROR\r\n':
                 raise GSMInitializationError
-            if line == None:
-                print('Noting was received...')
             sleep(PAUSE_BEFORE_SERIAL_READ)
 
         cmd = input('Insert command (or press enter to quit): ')
@@ -89,7 +89,9 @@ def open_serial_terminal():
 def reset_module():
     confirm = input('Do you really want to reset the GSM Module? (y/n): ')
     if confirm.lower() == 'y':
-        raise NotImplemented
+        GPIO.output(17, 0)
+        sleep(.003)
+        GPIO.output(17, 1)
 
 def send_command(cmd: str, encoding_for_decoding: str = 'utf-8'):
 

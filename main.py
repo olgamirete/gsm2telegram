@@ -27,7 +27,8 @@ def handle_send_command():
 options = [
     ["Open serial terminal", sim800l_helpers.open_serial_terminal],
     ["Read sms", handle_read_sms],
-    ["Send command", handle_send_command]
+    ["Send command", handle_send_command],
+    ["Reset module", sim800l_helpers.reset_module]
 ]
 
 formatted_options = [f"{str(i+1)}. {options[i][0]}" for i in range(len(options))]
