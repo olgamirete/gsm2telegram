@@ -22,8 +22,10 @@ GPIO.output(RST_PIN, 1)       # Normally high.
 
 class SMS_STATUS:
     ALL = "ALL"
-    READ = "REC READ"
-    UNREAD = "REC UNREAD"
+    READ = "REC READ"       # Received read.
+    UNREAD = "REC UNREAD"   # Received unread.
+    SENT = "STO SENT"       # Stored sent.
+    UNSENT = "STO UNSENT"   # Stored unsent.
 
 class AT_COMMAND_OUTPUT:
     def __init__(self) -> None:
