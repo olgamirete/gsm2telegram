@@ -4,6 +4,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+class UserNotFoundException(Exception):
+    pass
+
 def send_message(msg: str, to_user_id: int = None):
 
     user_id = getenv("MY_USER_ID") if to_user_id == None else to_user_id
@@ -33,5 +36,7 @@ def find_user_id_by_msg(msg: str):
     with app:
         messages = app.search_global(query=msg)
     
-    return messages[0]["from_user"]["id"]
-
+    if len(messages) > 0:
+        return messages[0]["from_user"]["id"]
+    else:
+        raise UserNotFoundException
