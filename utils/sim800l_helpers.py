@@ -14,7 +14,7 @@ PAUSE_BEFORE_SERIAL_READ = .5
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(17, GPIO.OUT) # RST pin
-GPIO.output(17, 1)       # Normally high.
+GPIO.output(17, 0)       # Normally high.
 
 class SMS_STATUS:
     ALL = "ALL"
@@ -96,7 +96,6 @@ def reset_module():
         sleep(1)
         GPIO.output(17, 0)
         sleep(1)
-        GPIO.output(17, 1)
         print('Sent pulse for resetting module!')
 
 def send_command(cmd: str, encoding_for_decoding: str = 'utf-8'):
