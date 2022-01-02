@@ -207,7 +207,7 @@ def __parse_sms(serial_lines: list[str]) -> list[Received_SMS]:
             if sms == None and line != None:
                 print('Unhandled line found. See line below:')
                 print(line)
-            elif line != 'OK\r\n' and line != 'ERROR\r\n':
+            elif line != 'OK' and line != 'ERROR':
                 sms.text += line
     list_of_sms.append(sms)
 
@@ -229,11 +229,6 @@ def __parse_sms(serial_lines: list[str]) -> list[Received_SMS]:
                     # we just leave the original text received and let the user
                     # decide what they want to do
                     pass
-
-    
-            
-            
-
     return list_of_sms
 
 
