@@ -129,7 +129,8 @@ def send_command(cmd: str, encoding_for_decoding: str = 'utf-8'):
         output = AT_COMMAND_OUTPUT()
         line_constructor = ''
         while True:
-            serial_str = piSerial.readline().decode(encoding_for_decoding)
+            # serial_str = piSerial.readline().decode(encoding_for_decoding)
+            serial_str = piSerial.readline().decode()
             if serial_str.endswith('\r\n'):
                 line_constructor += serial_str[:-2]
                 line = line_constructor
