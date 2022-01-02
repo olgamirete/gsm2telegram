@@ -1,3 +1,4 @@
+import RPi.GPIO as GPIO
 import utils.telegram_helpers as telegram_helpers
 import utils.sim800l_helpers as sim800l_helpers
 
@@ -42,14 +43,20 @@ interface = [
 
 while True:
 
-    x = input('\n' + '\n'.join(interface))
+    try:
+        x = input('\n' + '\n'.join(interface))
 
-    if x in [str(i+1) for i in range(len(options))]:
-        i = int(x)
-        selected_action = options[int(x)-1][1]
-        selected_action()
-    else:
-        print('\nPlease select a valid option.')
+        if x in [str(i+1) for i in range(len(options))]:
+            i = int(x)
+            selected_action = options[int(x)-1][1]
+            selected_action()
+        else:
+            print('\nPlease select a valid option.')
+    except KeyboardInterrupt:
+        print('Keyboard interrput!')
+    
+    finally:
+        GPIO.cleanup()
 
 # telegram_helpers.send_message("test, holis3")
 
