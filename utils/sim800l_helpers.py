@@ -54,12 +54,13 @@ def open_serial_terminal():
         sleep(PAUSE_BEFORE_SERIAL_READ)
         while True:
             line = piSerial.readline().decode('utf-8')
-            print(line)
             if line == 'OK\r\n':
                 print('Correctly initialized communication with GSM module!')
                 break
             if line == 'ERROR\r\n':
                 raise GSMInitializationError
+            if line == None:
+                print('Noting was received...')
             sleep(PAUSE_BEFORE_SERIAL_READ)
 
         cmd = input('Insert command (or press enter to quit): ')
