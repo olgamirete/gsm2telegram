@@ -16,5 +16,12 @@ try:
             msg_for_telegram += f'SMS Content:\n{sms.text}'
             telegram_helpers.send_message(msg_for_telegram)
         sleep(1)
-except:
-    telegram_helpers.send_message('Error while checking for new sms messages.')
+
+except Exception as e:
+    msg_constructor = [
+        'Error while checking for new sms messages.',
+        '**Error message**:',
+        e
+    ]
+    telegram_helpers.send_message('\n\n'.join(msg_constructor))
+    
