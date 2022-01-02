@@ -55,8 +55,8 @@ def open_serial_terminal():
         print('Serial port was opened! Doing initial handshake with module...')
         sleep(PAUSE_AFTER_SERIAL_OPEN)
         _write_to_serial(piSerial, 'AT\r\n')
-        print('Sent command for initial handshake with module! Awaiting reply...')
         sleep(PAUSE_BEFORE_SERIAL_READ)
+        print('Sent command for initial handshake with module! Awaiting reply...')
         while True:
             line = piSerial.readline().decode('utf-8')
             if line == 'OK\r\n':
@@ -64,6 +64,7 @@ def open_serial_terminal():
                 break
             if line == 'ERROR\r\n':
                 raise GSMInitializationError
+            print(line)
             sleep(PAUSE_BEFORE_SERIAL_READ)
 
         cmd = input('Insert command (or press enter to quit): ')
