@@ -15,7 +15,7 @@ def handle_read_sms():
         elif sms_type == 'unread':
             sms_type = sim800l_helpers.SMS_STATUS.UNREAD
         
-        sim800l_helpers.read_sms(sms_type)
+    sim800l_helpers.read_sms(sms_type)
         
 def handle_send_command():
     cmd = ''
