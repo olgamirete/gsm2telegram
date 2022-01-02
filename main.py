@@ -36,7 +36,7 @@ formatted_options = '\n'.join(formatted_options)
 interface = [
     '#-SIM800L Toolbox---------------------#',
     formatted_options,
-    'Choose an option: '
+    '\nChoose an option: '
 ]
 
 while True:
