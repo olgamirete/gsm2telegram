@@ -68,7 +68,7 @@ def open_serial_terminal():
                 break
             if line == 'ERROR\r\n':
                 raise GSMInitializationError
-            print(line)
+            # print(line)
             sleep(PAUSE_BEFORE_SERIAL_READ)
 
         cmd = input('Insert command (or press enter to quit): ')
@@ -146,8 +146,9 @@ def send_command(cmd: str, encoding_for_decoding: str = 'utf-8'):
         return output
 
 def read_sms(filter_by_status: SMS_STATUS = SMS_STATUS.UNREAD, flag_text_mode: bool = True):
-    print(f'Setting AT+CMGF={1 if flag_text_mode == True else 0}...')
-    output = send_command(f'AT+CMGF={1 if flag_text_mode == True else 0}')
+    cmd = f'AT+CMGF={1 if flag_text_mode == True else 0}\r\n'
+    print(f'Setting {cmd}...')
+    output = send_command(cmd)
     print('Finished configuring AT+CMGF!')
     if output.status == 'OK':
         print('Retrieving messages...')
@@ -182,7 +183,6 @@ def __parse_sms(serial_lines: list[str]) -> list[Received_SMS]:
     for i in range(len(serial_lines)):
         line = serial_lines[i]
         if line.startswith('+CMGL: '):
-            
             if sms != None:
                 list_of_sms.append(sms)
                 sms = None
@@ -202,8 +202,9 @@ def __parse_sms(serial_lines: list[str]) -> list[Received_SMS]:
                 index=index,
                 status=status
             )
+
         else:
-            if sms == None:
+            if sms == None and line != None:
                 print('Unhandled line found. See line below:')
                 print(line)
             else:
