@@ -1,4 +1,4 @@
-import serial
+import serial, re
 import RPi.GPIO as GPIO
 from time import sleep
 from dotenv import load_dotenv
@@ -178,7 +178,7 @@ def read_sms(filter_by_status: SMS_STATUS = SMS_STATUS.UNREAD, flag_text_mode: b
         print(output.text())
 
 def __parse_sms(serial_lines: list[str]) -> list[Received_SMS]:
-    list_of_sms = []
+    list_of_sms: list[Received_SMS] = []
     sms = None
     for i in range(len(serial_lines)):
         line = serial_lines[i]
@@ -210,6 +210,30 @@ def __parse_sms(serial_lines: list[str]) -> list[Received_SMS]:
             else:
                 sms.text += line
     list_of_sms.append(sms)
-    return list_of_sms
+
+    if len(list_of_sms) > 0:
+        hex_pattern_str = r'^(?P<content>([0-9A-F]{2})+)(\r\n)?$'
+        hex_pattern = re.compile(hex_pattern_str)
+        for sms in list_of_sms:
+            matches = hex_pattern.search(sms)
+            try:
+                is_hex = matches.groupdict()['content'] != None
+            except AttributeError:
+                is_hex = False
             
+            if is_hex == True:
+                try:
+                    sms.text = bytes.fromhex(sms).decode('utf-16-be')
+                except UnicodeDecodeError:
+                    # We tried to decode the sms, but we couldn't. In this case,
+                    # we just leave the original text received and let the user
+                    # decide what they want to do
+                    pass
+
+    
+            
+            
+
+    return list_of_sms
+
 
