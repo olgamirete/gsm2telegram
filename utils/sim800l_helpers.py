@@ -50,9 +50,12 @@ def _write_to_serial(ser: serial.Serial, command: str):
     ser.write(command.encode('utf-8'))
 
 def open_serial_terminal():
+    print('Will open serial port...')
     with serial.Serial(SERIAL_PORT, baudrate=SERIAL_BAUD, timeout=SERIAL_TIMEOUT) as piSerial:
+        print('Serial port was opened! Doing initial handshake with module...')
         sleep(PAUSE_AFTER_SERIAL_OPEN)
         _write_to_serial(piSerial, 'AT\r\n')
+        print('Sent command for initial handshake with module! Awaiting reply...')
         sleep(PAUSE_BEFORE_SERIAL_READ)
         while True:
             line = piSerial.readline().decode('utf-8')
