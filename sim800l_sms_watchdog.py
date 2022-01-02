@@ -32,7 +32,10 @@ except Exception as e:
         e
     ]
     error_msg = '\n\n'.join(msg_constructor)
+    with open(LOG_FILE, 'a', encoding='utf-8') as f:
+        f.write(f'{datetime.now().isoformat()}: Error while checking for new SMS. See {ERROR_LOG_FILE} file for detail.\n')
     with open(ERROR_LOG_FILE, 'a', encoding='utf-8') as f:
-        f.write(f'{datetime.now().isoformat()}: Error while checking for new SMS. See detail:\n{error_msg}\n')
+        f.write(f'{datetime.now().isoformat()}:\n{e}\n')
+        f.write('--------------------------------------------------------------------------------\n')
     telegram_helpers.send_message(error_msg)
     
