@@ -146,7 +146,7 @@ def send_command(cmd: str, encoding_for_decoding: str = 'utf-8'):
         return output
 
 def read_sms(filter_by_status: SMS_STATUS = SMS_STATUS.UNREAD, flag_text_mode: bool = True):
-    cmd = f'AT+CMGF={1 if flag_text_mode == True else 0}\r\n'
+    cmd = f'AT+CMGF={1 if flag_text_mode == True else 0}'
     print(f'Setting {cmd}...')
     output = send_command(cmd)
     print('Finished configuring AT+CMGF!')
@@ -162,10 +162,10 @@ def read_sms(filter_by_status: SMS_STATUS = SMS_STATUS.UNREAD, flag_text_mode: b
                 msg = messages[i]
                 print('----------------------------------------------------')
                 if msg != None:
-                    print(f'Timestamp: {msg.timestamp}')
-                    print(f'Status:    {msg.status}')
-                    print(f'Index:     {msg.index}')
-                    print(f'From:      {msg.sender}')
+                    print(f'Timestamp:   {msg.timestamp}')
+                    print(f'Status:      {msg.status}')
+                    print(f'Index:       {msg.index}')
+                    print(f'From:        {msg.sender}')
                     print(f'SMS Content:\n{msg.text}')
                 else:
                     print(f'Message at array index {i} is None.')
