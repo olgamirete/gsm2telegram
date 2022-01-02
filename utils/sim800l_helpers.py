@@ -92,9 +92,12 @@ def open_serial_terminal():
 def reset_module():
     confirm = input('Do you really want to reset the GSM Module? (y/n): ')
     if confirm.lower() == 'y':
-        GPIO.output(17, 0)
-        sleep(.003)
         GPIO.output(17, 1)
+        sleep(1)
+        GPIO.output(17, 0)
+        sleep(1)
+        GPIO.output(17, 1)
+        print('Sent pulse for resetting module!')
 
 def send_command(cmd: str, encoding_for_decoding: str = 'utf-8'):
 
