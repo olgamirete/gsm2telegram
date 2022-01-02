@@ -231,5 +231,3 @@ def __parse_sms(serial_lines: list[str]) -> list[SMS_Info]:
                     # decide what they want to do
                     pass
     return list_of_sms
-
-
