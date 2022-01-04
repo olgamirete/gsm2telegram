@@ -1,0 +1,7 @@
+# Output of the crontab jobs (including errors) is sent through
+# email to the user the crontab file belongs to (unless redirected).
+#
+# For more information see the manual pages of crontab(5) and cron(8)
+#
+0,30 * * * * python ~/log-public-ip/checkip.py
+0,15,30,45 * * * * cd ~/gsm2telegram;python sim800l_sms_watchdog.py
