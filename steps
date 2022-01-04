@@ -1,0 +1,13 @@
+Enable ssh
+ - Change port to 6475
+ - Allow only keyauth
+Log into internet
+
+enable serial communication
+disable login shell through serial
+
+disable bluetooth
+
+Check if git is installed.
+Check if python is installed.
+install pySerial
