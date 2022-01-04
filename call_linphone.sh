@@ -1,0 +1,1 @@
+linphonec -s sip:fgiancarelli@sip.linphone.org
