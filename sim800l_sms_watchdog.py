@@ -2,6 +2,8 @@
 from time import sleep
 from datetime import datetime
 from os import path, makedirs
+import utils.telegram_helpers as telegram_helpers
+import utils.sim800l_helpers as sim800l_helpers
 
 LOG_FILE=path.join(path.dirname(__file__), 'logs', 'sms_watchdog', 'log')
 ERROR_LOG_FILE=path.join(path.dirname(__file__), 'logs', 'sms_watchdog', 'errors')
@@ -20,8 +22,6 @@ def write_to_error_log(msg: str):
         f.write('--------------------------------------------------------------------------------\n')
 
 try:
-    import utils.telegram_helpers as telegram_helpers
-    import utils.sim800l_helpers as sim800l_helpers
     unread_sms = sim800l_helpers.read_sms(sim800l_helpers.SMS_STATUS.UNREAD)
     if len(unread_sms) > 0:
         telegram_helpers.send_message('You\'ve got mail!')
