@@ -1,0 +1,54 @@
+# 0 Change default password
+ - sudo raspi-config
+ - 1 System options
+ - S3 Password
+
+# 1 Enable wifi
+ - sudo raspi-config
+ - 1 System options
+ - S1 Wireless LAN
+
+# 2 Set timezone
+ - sudo raspi-config
+ - 5 Localisation options
+ - L2 Timezone
+
+# 3 Enable SSH
+ - sudo raspi-config
+ - 3 Interface options
+ - I2 SSH
+ - Select "Yes" to enable ssh server
+ - Allow only keyauth
+ - - Store your public keys in the raspberry
+ - - - vim ~/.ssh/authorized_keys # No need for sudo. This is a user file.
+ - - - Now paste your keys there. If you don't, you will be locked out of ssh!
+ - - Now setup ssh to use them
+ - - - sudo vim /etc/ssh/sshd_config
+ - - - Make sure the following lines are uncommented
+ - - - - PasswordAuthentication no  # Disable password authentication
+ - - - - PubkeyAuthentication yes   # Enable public key authentication
+ - - - - PermitRootLogin no         # Disable root login
+ - Follow the next steps to enable ssh access outside of the local network
+ - - In the router, forward preferred port to port 22 in the raspberry pi.
+
+# 4 Enable console autologin
+ - sudo raspi-config
+ - 1 System Options
+ - S5 Boot / Auto Login
+ - B2 Console Autologin
+
+# 5 Enable serial communication
+ - sudo raspi-config
+ - 3 Interface options
+ - I6 Serial port
+ - Select "No" to disable login shell through serial
+ - Select "Yes" to enable the serial port hardware
+ - Disable bluetooth and assign the main UART port to GPIO 14 (TXD) and 15 (RXD)
+ - - sudo vim /boot/config.txt
+ - - dtoverlay = disable-bt # make sure to have this line uncommented
+
+# 6 Install basic programs
+ - Check if git is installed. Otherwise, sudo apt-get install git
+ - Check if python is installed. Otherwise, sudo apt-get install python
+ - python -m pip install pySerial
+ 
