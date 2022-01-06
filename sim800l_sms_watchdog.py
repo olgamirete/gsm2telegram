@@ -5,14 +5,22 @@ from datetime import datetime
 LOG_FILE='log_sms_watchdog'
 ERROR_LOG_FILE='error_log_sms_watchdog'
 
+def write_to_log(msg: str):
+    with open(LOG_FILE, 'a', encoding='utf-8') as f:
+        f.write(f'{datetime.now().isoformat()}: {msg}\n')
+
+def write_to_error_log(msg: str):
+    with open(ERROR_LOG_FILE, 'a', encoding='utf-8') as f:
+        f.write(f'{datetime.now().isoformat()}:\n{e}\n')
+        f.write('--------------------------------------------------------------------------------\n')
+
 try:
     import utils.telegram_helpers as telegram_helpers
     import utils.sim800l_helpers as sim800l_helpers
     unread_sms = sim800l_helpers.read_sms(sim800l_helpers.SMS_STATUS.UNREAD)
     if len(unread_sms) > 0:
         telegram_helpers.send_message('You\'ve got mail!')
-        with open(LOG_FILE, 'a', encoding='utf-8') as f:
-            f.write(f'{datetime.now().isoformat()}: Found {len(unread_sms)} message/s.\n')
+        write_to_log(f'Found {len(unread_sms)} message/s.')
         for sms in unread_sms:
             msg_for_telegram = ''
             msg_for_telegram += f'```Timestamp:   ```{sms.timestamp}\n'
@@ -32,10 +40,7 @@ except Exception as e:
         e
     ]
     error_msg = '\n\n'.join(msg_constructor)
-    with open(LOG_FILE, 'a', encoding='utf-8') as f:
-        f.write(f'{datetime.now().isoformat()}: Error while checking for new SMS. See {ERROR_LOG_FILE} file for detail.\n')
-    with open(ERROR_LOG_FILE, 'a', encoding='utf-8') as f:
-        f.write(f'{datetime.now().isoformat()}:\n{e}\n')
-        f.write('--------------------------------------------------------------------------------\n')
+    write_to_log(f'Error while checking for new SMS. See {ERROR_LOG_FILE} file for detail.')
+    write_to_error_log(e)
     telegram_helpers.send_message(error_msg)
     
