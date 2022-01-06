@@ -1,10 +1,14 @@
 # Run every 15 minutes
 from time import sleep
 from datetime import datetime
-from os import path
+from os import path, makedirs
 
 LOG_FILE=path.join(path.dirname(__file__), 'logs', 'sms_watchdog', 'log')
 ERROR_LOG_FILE=path.join(path.dirname(__file__), 'logs', 'sms_watchdog', 'errors')
+
+for x in [LOG_FILE, ERROR_LOG_FILE]:
+    if path.exists(path.dirname(x)) == False:
+        makedirs(path.dirname(x))
 
 def write_to_log(msg: str):
     with open(LOG_FILE, 'a', encoding='utf-8') as f:
