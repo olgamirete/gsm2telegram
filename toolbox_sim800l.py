@@ -15,13 +15,13 @@ def handle_read_sms():
     elif sms_type == 'unread':
         sms_type = sim800l_helpers.SMS_STATUS.UNREAD
         
-    sim800l_helpers.read_sms(sms_type)
+    sim800l_helpers.read_sms(sms_type, verbose=True)
         
 def handle_send_command():
     cmd = ''
     while cmd == '':
         cmd = input('Enter command to send: ')
-    output = sim800l_helpers.send_command(cmd)
+    output = sim800l_helpers.send_command(cmd, verbose=True)
     print(output.text())
 
 options = [
