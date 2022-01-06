@@ -51,4 +51,4 @@
  - Check if git is installed. Otherwise, sudo apt-get install git
  - Check if python is installed. Otherwise, sudo apt-get install python
  - python -m pip install pySerial
- 
+ - sudo apt install linphone-nogtk
