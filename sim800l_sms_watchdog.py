@@ -1,9 +1,10 @@
 # Run every 15 minutes
 from time import sleep
 from datetime import datetime
+from os import path
 
-LOG_FILE='log_sms_watchdog'
-ERROR_LOG_FILE='error_log_sms_watchdog'
+LOG_FILE=path.join(path.dirname(__file__), 'logs', 'sms_watchdog', 'log')
+ERROR_LOG_FILE=path.join(path.dirname(__file__), 'logs', 'sms_watchdog', 'errors')
 
 def write_to_log(msg: str):
     with open(LOG_FILE, 'a', encoding='utf-8') as f:
