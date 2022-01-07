@@ -19,7 +19,7 @@ class Linphone():
         self.p.communicate('linphonecsh generic "answer"')
     
     def call(self, sip_address: str = None):
-        call_address = self.default_call_address | sip_address
+        call_address = self.default_call_address if sip_address == None else sip_address
         self.p.communicate(f'linphonecsh generic "call {call_address}"')
 
 
