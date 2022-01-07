@@ -38,4 +38,4 @@ with Linphone(MY_SIP_ADDRESS) as voip:
     # sleep(5)
     voip.call()
 
-    a = input('Press enter to end.')
+    # a = input('Press enter to end.')
