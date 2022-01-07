@@ -8,19 +8,21 @@ class Linphone():
         self.default_call_address = default_call_address
     
     def __enter__(self):
-        self.p = Popen('linphonecsh init')
+        self.p = Popen('linphonecsh init', shell=True)
         self.p.wait()
         return self
 
     def __exit__(self, type, value, traceback):
         self.p.communicate('linphonecsh exit')
         self.p.kill()
+        print('Exited correctly!')
     
     def answer_call(self):
         self.p.communicate('linphonecsh generic "answer"')
     
     def call(self, sip_address: str = None):
         call_address = self.default_call_address if sip_address == None else sip_address
+        print(f'Will make a call to {call_address}!')
         self.p.communicate(f'linphonecsh generic "call {call_address}"')
 
 
@@ -31,3 +33,5 @@ print(f'sip address: {MY_SIP_ADDRESS}')
 with Linphone(MY_SIP_ADDRESS) as voip:
     # sleep(5)
     voip.call()
+
+    a = input('Press enter to end.')
