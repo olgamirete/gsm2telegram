@@ -13,7 +13,7 @@ class Linphone():
         self.p.wait()
         return self
 
-    def __exit__(self):
+    def __exit__(self, type, value, traceback):
         self.p.communicate('linphonecsh exit')
     
     def answer_call(self):
