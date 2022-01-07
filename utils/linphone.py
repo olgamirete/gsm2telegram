@@ -8,7 +8,7 @@ class Linphone():
         self.default_call_address = default_call_address
     
     def __enter__(self):
-        self.p = Popen('linphonecsh init', shell=True)
+        self.p = Popen('linphonecsh init')
         self.p.wait()
         return self
 
