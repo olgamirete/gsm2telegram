@@ -6,7 +6,7 @@ from time import sleep
 class Linphone():
     def __init__(self, default_call_address: str = None) -> None:
         self.default_call_address = default_call_address
-        self.p = Popen('linphonec')
+        self.p = Popen('linphonec', shell=True)
         self.p.wait()
     
     def answer_call(self):
