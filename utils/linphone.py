@@ -1,6 +1,7 @@
 from dotenv import load_dotenv
 from os import system, getenv
 from subprocess import Popen
+from time import sleep
 
 class Linphone():
     def __init__(self, default_call_address: str = None) -> None:
@@ -20,5 +21,7 @@ load_dotenv()
 MY_SIP_ADDRESS = getenv('MY_SIP_ADDRESS')
 
 voip = Linphone(MY_SIP_ADDRESS)
+
+sleep(5)
 
 voip.call()
