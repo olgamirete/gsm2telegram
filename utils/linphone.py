@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 from os import system, getenv
-from subprocess import Popen
+from subprocess import Popen, PIPE
 from time import sleep
 
 class Linphone():
@@ -8,8 +8,9 @@ class Linphone():
         self.default_call_address = default_call_address
     
     def __enter__(self):
-        self.p = Popen('linphonecsh init', shell=True)
+        self.p = Popen('linphonecsh init', shell=True, stdin=PIPE)
         self.p.wait()
+        print('Initiated successfully!')
         return self
 
     def __exit__(self, type, value, traceback):
