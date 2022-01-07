@@ -14,6 +14,7 @@ class Linphone():
 
     def __exit__(self, type, value, traceback):
         self.p.communicate('linphonecsh exit')
+        self.p.kill()
     
     def answer_call(self):
         self.p.communicate('linphonecsh generic "answer"')
