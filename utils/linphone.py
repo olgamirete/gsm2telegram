@@ -4,28 +4,27 @@ from subprocess import Popen, PIPE
 from time import sleep
 
 class Linphone():
-    def __init__(self, default_call_address: str = None) -> None:
+    def __init__(self, default_call_address: str = None, timeout: int = 10) -> None:
         self.default_call_address = default_call_address
+        self.TIMEOUT = timeout
     
     def __enter__(self):
-        self.p = Popen('linphonecsh init', shell=True, stdin=PIPE)
-        self.p.wait()
+        self.p = Popen('linphonecsh init', shell=False, stdin=PIPE, stdout=PIPE, stderr=PIPE)
         print('Initiated successfully!')
         return self
 
     def __exit__(self, type, value, traceback):
-        self.p.communicate('linphonecsh exit')
+        outs, errs = self.p.communicate('linphonecsh exit', timeout=self.TIMEOUT)
         self.p.kill()
         print('Exited correctly!')
     
     def answer_call(self):
-        self.p.communicate('linphonecsh generic "answer"')
+        outs, errs = self.p.communicate('linphonecsh generic "answer"', timeout=self.TIMEOUT)
     
     def call(self, sip_address: str = None):
         call_address = self.default_call_address if sip_address == None else sip_address
         print(f'Will make a call to {call_address}!')
-        self.p.communicate(f'linphonecsh generic "call {call_address}"'.encode())
-        self.p.wait()
+        outs, errs = self.p.communicate(f'linphonecsh generic "call {call_address}"'.encode(), timeout=self.TIMEOUT)
         sleep(30)
 
 
