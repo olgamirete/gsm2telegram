@@ -1,17 +1,19 @@
 from dotenv import load_dotenv
 from os import system, getenv
+from subprocess import Popen
 
 class Linphone():
     def __init__(self, default_call_address: str = None) -> None:
         self.default_call_address = default_call_address
-        system('linphonec')
+        self.p = Popen()
+        self.p.communicate('linphonec')
     
     def answer_call(self):
-        system('answer')
+        self.p.communicate('answer')
     
     def call(self, sip_address: str = None):
         call_address = self.default_call_address | sip_address
-        system(f'call {call_address}')
+        self.p.communicate(f'call {call_address}')
 
 
 load_dotenv()
