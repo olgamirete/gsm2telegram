@@ -6,8 +6,15 @@ from time import sleep
 class Linphone():
     def __init__(self, default_call_address: str = None) -> None:
         self.default_call_address = default_call_address
+        pass
+    
+    def __enter__(self):
         self.p = Popen('linphonecsh init')
         self.p.wait()
+        return self
+
+    def __exit__(self):
+        self.p.communicate('linphonecsh exit')
     
     def answer_call(self):
         self.p.communicate('linphonecsh generic "answer"')
