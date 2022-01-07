@@ -25,6 +25,8 @@ class Linphone():
         call_address = self.default_call_address if sip_address == None else sip_address
         print(f'Will make a call to {call_address}!')
         self.p.communicate(f'linphonecsh generic "call {call_address}"'.encode())
+        self.p.wait()
+        sleep(30)
 
 
 load_dotenv()
