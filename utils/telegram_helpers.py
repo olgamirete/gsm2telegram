@@ -1,5 +1,4 @@
 from os import getenv
-from typing import BinaryIO
 from pyrogram import Client
 from dotenv import load_dotenv
 
