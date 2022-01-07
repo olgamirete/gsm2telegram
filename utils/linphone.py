@@ -9,7 +9,7 @@ class Linphone():
         self.TIMEOUT = timeout
     
     def __enter__(self):
-        self.p = Popen('linphonecsh init', shell=False, stdin=PIPE, stdout=PIPE, stderr=PIPE, text=True)
+        self.p = Popen('linphonecsh init', shell=True, stdin=PIPE, stdout=PIPE, stderr=PIPE, text=True)
         print('Initiated successfully!')
         return self
 
