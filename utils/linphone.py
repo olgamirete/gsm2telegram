@@ -9,7 +9,7 @@ class Linphone():
         pass
     
     def __enter__(self):
-        self.p = Popen('linphonecsh init')
+        self.p = Popen('linphonecsh init', shell=True)
         self.p.wait()
         return self
 
@@ -28,10 +28,6 @@ load_dotenv()
 MY_SIP_ADDRESS = getenv('MY_SIP_ADDRESS')
 print(f'sip address: {MY_SIP_ADDRESS}')
 
-voip = Linphone(MY_SIP_ADDRESS)
-
-# sleep(5)
-
-voip.call()
-
-# system(f'linphonec;call {MY_SIP_ADDRESS}')
+with Linphone(MY_SIP_ADDRESS) as voip:
+    # sleep(5)
+    voip.call()
