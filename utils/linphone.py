@@ -21,8 +21,10 @@ load_dotenv()
 MY_SIP_ADDRESS = getenv('MY_SIP_ADDRESS')
 print(f'sip address: {MY_SIP_ADDRESS}')
 
-voip = Linphone(MY_SIP_ADDRESS)
+# voip = Linphone(MY_SIP_ADDRESS)
 
-sleep(5)
+# sleep(5)
 
-voip.call()
+# voip.call()
+
+system(f'linphonec;call {MY_SIP_ADDRESS}')
