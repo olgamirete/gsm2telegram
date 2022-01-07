@@ -275,3 +275,6 @@ def __serial_initialize(serial_interface: serial.Serial, verbose: bool = False):
         elif time()-time_start > GSM_TIMEOUT:
             raise GSMTimeoutError
         sleep(PAUSE_BEFORE_SERIAL_READ)
+    
+def answer_call():
+    send_command("ATA")
