@@ -9,7 +9,8 @@ class Linphone():
         self.TIMEOUT = timeout
     
     def __enter__(self):
-        self.p = Popen('linphonecsh init', shell=True, stdin=PIPE, stdout=PIPE, stderr=PIPE, text=True)
+        # self.p = Popen('linphonecsh init', shell=True, stdin=PIPE, stdout=PIPE, stderr=PIPE, text=True)
+        system('linphonecsh init')
         # cmds = [
         #     'proxy add',
         #     '<sip:sip.linphone.org;transport=tls>' # Proxy sip address
@@ -23,20 +24,23 @@ class Linphone():
         return self
 
     def __exit__(self, type, value, traceback):
-        outs, errs = self.p.communicate('linphonecsh exit', timeout=self.TIMEOUT)
-        self.p.kill()
+        # outs, errs = self.p.communicate('linphonecsh exit', timeout=self.TIMEOUT)
+        system('linphonecsh exit')
+        # self.p.kill()
         print('Exited correctly!')
     
     def answer_call(self):
-        outs, errs = self.p.communicate('linphonecsh generic "answer"', timeout=self.TIMEOUT)
+        # outs, errs = self.p.communicate('linphonecsh generic "answer"', timeout=self.TIMEOUT)
+        system('linphonecsh generic "answer"')
     
     def call(self, sip_address: str = None):
         call_address = self.default_call_address if sip_address == None else sip_address
         print(f'Will make a call to {call_address}!')
-        outs, errs = self.p.communicate(f'linphonecsh generic "call {call_address}"', timeout=self.TIMEOUT)
+        # outs, errs = self.p.communicate(f'linphonecsh generic "call {call_address}"', timeout=self.TIMEOUT)
+        system(f'linphonecsh generic "call {call_address}"')
         sleep(30)
-        print(outs)
-        print(errs)
+        # print(outs)
+        # print(errs)
 
 
 load_dotenv()
@@ -49,4 +53,3 @@ with Linphone(MY_SIP_ADDRESS) as voip:
 
     # a = input('Press enter to end.')
     print("finished call")
-    sleep(30)
