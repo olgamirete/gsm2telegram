@@ -10,6 +10,15 @@ class Linphone():
     
     def __enter__(self):
         self.p = Popen('linphonecsh init', shell=True, stdin=PIPE, stdout=PIPE, stderr=PIPE, text=True)
+        # cmds = [
+        #     'proxy add',
+        #     '<sip:sip.linphone.org;transport=tls>' # Proxy sip address
+        #     'sip:fgiancarelli_caller@sip.linphone.org', # Username / Identity for proxy
+        #     'yes' # "Do you want to register on this proxy?"
+        #     '0', # "Specify register expiration time in seconds (default is 600)"
+        #     '', # "Specify route if needed",
+        #     "yes" # Accept proxy configuration
+        # ]
         print('Initiated successfully!')
         return self
 
@@ -25,9 +34,9 @@ class Linphone():
         call_address = self.default_call_address if sip_address == None else sip_address
         print(f'Will make a call to {call_address}!')
         outs, errs = self.p.communicate(f'linphonecsh generic "call {call_address}"', timeout=self.TIMEOUT)
+        sleep(30)
         print(outs)
         print(errs)
-        sleep(30)
 
 
 load_dotenv()
@@ -39,3 +48,5 @@ with Linphone(MY_SIP_ADDRESS) as voip:
     voip.call()
 
     # a = input('Press enter to end.')
+    print("finished call")
+    sleep(30)
