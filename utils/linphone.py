@@ -27,7 +27,7 @@ class Linphone():
     def __exit__(self, type, value, traceback):
         # outs, errs = self.p.communicate('linphonecsh exit', timeout=self.TIMEOUT)
         system('linphonecsh exit')
-        self.p.kill()
+        # self.p.kill()
         print('Exited correctly!')
     
     def answer_call(self):
