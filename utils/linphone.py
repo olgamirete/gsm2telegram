@@ -12,7 +12,7 @@ class Linphone():
     def __enter__(self):
         system('linphonecsh init -c ~/.linphonerc')
         # run(['linphonecsh', 'init', '-c', '~/.linphonerc'])
-        sleep(1)
+        sleep(3)
         # cmds = [
         #     'proxy add',
         #     '<sip:sip.linphone.org;transport=tls>' # Proxy sip address
