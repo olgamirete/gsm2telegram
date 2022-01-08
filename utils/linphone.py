@@ -9,7 +9,8 @@ class Linphone():
         self.TIMEOUT = timeout
     
     def __enter__(self):
-        self.p = Popen('linphonecsh init', shell=True, stdin=PIPE, stdout=PIPE, stderr=PIPE, text=True)
+        self.p = Popen('linphonecsh init -c ~/.linphonerc', shell=True, stdin=PIPE, stdout=PIPE, stderr=PIPE, text=True)
+
         # system('linphonecsh init')
         # cmds = [
         #     'proxy add',
@@ -38,7 +39,7 @@ class Linphone():
         print(f'Will make a call to {call_address}!')
         outs, errs = self.p.communicate(f'linphonecsh generic "call {call_address}"', timeout=self.TIMEOUT)
         # system(f'linphonecsh generic "call {call_address}"')
-        sleep(30)
+        sleep(10)
         print(outs)
         print(errs)
 
