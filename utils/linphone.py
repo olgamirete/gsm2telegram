@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 from os import system, getenv
-# from subprocess import Popen, PIPE
+from subprocess import run #Popen, PIPE
 from time import sleep
 
 class Linphone():
@@ -9,7 +9,7 @@ class Linphone():
         self.TIMEOUT = timeout
     
     def __enter__(self):
-        system('linphonecsh init -c ~/.linphonerc')
+        run('linphonecsh init -c ~/.linphonerc')
         # cmds = [
         #     'proxy add',
         #     '<sip:sip.linphone.org;transport=tls>' # Proxy sip address
@@ -23,20 +23,19 @@ class Linphone():
         return self
 
     def __exit__(self, type, value, traceback):
-        system('linphonecsh exit')
+        run('linphonecsh exit')
         print('Exited correctly!')
     
     def answer_call(self):
-        system('linphonecsh generic "answer"')
+        run('linphonecsh generic "answer"')
     
     def call(self, sip_address: str = None):
         call_address = self.default_call_address if sip_address == None else sip_address
         print(f'Will make a call to {call_address}!')
-        system(f'linphonecsh generic "call {call_address}"')
+        run(f'linphonecsh generic "call {call_address}"')
         sleep(10)
         # print(outs)
         # print(errs)
-
 
 load_dotenv()
 MY_SIP_ADDRESS = getenv('MY_SIP_ADDRESS')
