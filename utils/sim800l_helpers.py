@@ -165,7 +165,7 @@ def send_command(cmd: str, verbose: bool = False, serial_port: serial.Serial = N
             sleep(PAUSE_BEFORE_SERIAL_READ)
         return output
 
-def read_sms(filter_by_status: SMS_STATUS = SMS_STATUS.UNREAD, flag_text_mode: bool = True, verbose: bool = False) -> list[SMS_Data]:
+def read_sms(filter_by_status: SMS_STATUS = SMS_STATUS.UNREAD, flag_text_mode: bool = True, verbose: bool = False): # -> list[SMS_Data]:
     cmd = f'AT+CMGF={1 if flag_text_mode == True else 0}'
     if verbose == True:
         print(f'Setting mode with {cmd}...')
@@ -201,8 +201,10 @@ def read_sms(filter_by_status: SMS_STATUS = SMS_STATUS.UNREAD, flag_text_mode: b
             print(output.text())
         raise GSMCommandError
 
-def __parse_sms(serial_lines: list[str], verbose: bool = False) -> list[SMS_Data]:
-    list_of_sms: list[SMS_Data] = []
+# def __parse_sms(serial_lines: list[str], verbose: bool = False) -> list[SMS_Data]:
+def __parse_sms(serial_lines: list, verbose: bool = False):
+    # list_of_sms: list[SMS_Data] = []
+    list_of_sms = []
     sms = None
     for i in range(len(serial_lines)):
         line = serial_lines[i]
