@@ -12,14 +12,21 @@
  - sudo raspi-config
  - 5 Localisation options
  - L2 Timezone
+ 
+# 3 Update apt sources
+ - sudo apt update
 
-# 3 Enable SSH
+# 4 Install vim
+ - sudo apt install vim
+
+# 5 Enable SSH
  - sudo raspi-config
  - 3 Interface options
  - I2 SSH
  - Select "Yes" to enable ssh server
  - Allow only keyauth
  - - Store your public keys in the raspberry
+ - - - mkdir ~/.ssh
  - - - vim ~/.ssh/authorized_keys # No need for sudo. This is a user file.
  - - - Now paste your keys there. If you don't, you will be locked out of ssh!
  - - Now setup ssh to use them
@@ -31,13 +38,14 @@
  - Follow the next steps to enable ssh access outside of the local network
  - - In the router, forward preferred port to port 22 in the raspberry pi.
 
-# 4 Enable console autologin
+# 6 Enable console autologin
  - sudo raspi-config
  - 1 System Options
  - S5 Boot / Auto Login
- - B2 Console Autologin
+#  - B2 Console Autologin
+ - B1 Console Autologin
 
-# 5 Enable serial communication
+# 7 Enable serial communication
  - sudo raspi-config
  - 3 Interface options
  - I6 Serial port
@@ -47,8 +55,21 @@
  - - sudo vim /boot/config.txt
  - - dtoverlay = disable-bt # make sure to have this line uncommented
 
-# 6 Install basic programs
+# 8 Install basic programs
  - Check if git is installed. Otherwise, sudo apt-get install git
  - Check if python is installed. Otherwise, sudo apt-get install python
- - python -m pip install pySerial
+ - If you want, create the alias "py" for "python3"
+ - - sudo vim ~/.bash_aliases
+ - - alias py='python3'
+ - - logout
+ - - login again
+ - py -m pip install python-dotenv
+ - py -m pip install pySerial # should be preinstalled on raspbian
+ - sudo apt install linphone
  - sudo apt install linphone-nogtk
+
+# 9 Extra setup
+ - mkdir git_projects
+ - 
+
+# Non-tested
