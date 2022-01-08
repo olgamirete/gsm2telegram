@@ -9,7 +9,7 @@ class Linphone():
         self.TIMEOUT = timeout
     
     def __enter__(self):
-        run('linphonecsh init -c ~/.linphonerc')
+        run('linphonecsh init -c ~/.linphonerc', text=True)
         # cmds = [
         #     'proxy add',
         #     '<sip:sip.linphone.org;transport=tls>' # Proxy sip address
@@ -23,7 +23,7 @@ class Linphone():
         return self
 
     def __exit__(self, type, value, traceback):
-        run('linphonecsh exit')
+        run('linphonecsh exit', text=True)
         print('Exited correctly!')
     
     def answer_call(self):
@@ -32,7 +32,7 @@ class Linphone():
     def call(self, sip_address: str = None):
         call_address = self.default_call_address if sip_address == None else sip_address
         print(f'Will make a call to {call_address}!')
-        run(f'linphonecsh generic "call {call_address}"')
+        run(f'linphonecsh generic "call {call_address}"', text=True)
         sleep(10)
         # print(outs)
         # print(errs)
