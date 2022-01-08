@@ -39,7 +39,7 @@ class Linphone():
         print(f'Will make a call to {call_address}!')
         system(f'linphonecsh generic "call {call_address}"')
         # run(['linphonecsh', 'generic', f'"call {call_address}"'])
-        sleep(10)
+        # sleep(10)
         # print(outs)
         # print(errs)
 
@@ -51,5 +51,5 @@ with Linphone(MY_SIP_ADDRESS) as voip:
     # sleep(5)
     voip.call()
 
-    # a = input('Press enter to end.')
+    a = input('Press enter to end.')
     print("finished call")
