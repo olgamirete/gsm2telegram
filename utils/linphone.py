@@ -10,7 +10,7 @@ class Linphone():
     
     def __enter__(self):
         self.p = Popen('linphonecsh init -c ~/.linphonerc', shell=True, stdin=PIPE, stdout=PIPE, stderr=PIPE, text=True)
-
+        self.p.wait(10)
         # system('linphonecsh init')
         # cmds = [
         #     'proxy add',
@@ -38,6 +38,7 @@ class Linphone():
         call_address = self.default_call_address if sip_address == None else sip_address
         print(f'Will make a call to {call_address}!')
         outs, errs = self.p.communicate(f'linphonecsh generic "call {call_address}"', timeout=self.TIMEOUT)
+        self.p.wait(10)
         # system(f'linphonecsh generic "call {call_address}"')
         sleep(10)
         print(outs)
