@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 from os import system, getenv
-from subprocess import run #Popen, PIPE
+# from subprocess import Popen, PIPE
 from time import sleep
 
 class Linphone():
