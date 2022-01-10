@@ -77,7 +77,7 @@ def open_serial_terminal():
             while True:
                 serial_bytes = piSerial.readline()
                 flag_decoding_successful = False
-                for codec in ['utf-8', 'latin-1', 'utf-16-be']:
+                for codec in CODEC_LIST:
                     try:
                         serial_str = serial_bytes.decode(codec)
                         flag_decoding_successful = True
@@ -267,15 +267,29 @@ def __serial_initialize(serial_interface: serial.Serial, verbose: bool = False):
     sleep(PAUSE_BEFORE_SERIAL_READ)
     time_start = time()
     while True:
-        line = serial_interface.readline().decode('utf-8')
-        if line == 'OK\r\n':
-            if verbose == True:
-                print('Correctly initialized communication with GSM module!')
-            return True
-        elif line == 'ERROR\r\n':
-            raise GSMInitializationError
-        elif time()-time_start > GSM_TIMEOUT:
-            raise GSMTimeoutError
+        serial_bytes = serial_interface.readline()
+        flag_decoding_successful = False
+        for codec in CODEC_LIST:
+            try:
+                line = serial_bytes.decode(codec)
+                flag_decoding_successful = True
+                break
+            except UnicodeDecodeError as e:
+                pass
+            
+        if flag_decoding_successful != True:
+            print('Could not decode bytes from serial. Bytes received:')
+            print(serial_bytes)
+            print(f'----------\n{e}\n----------')
+        else:
+            if line == 'OK\r\n':
+                if verbose == True:
+                    print('Correctly initialized communication with GSM module!')
+                return True
+            elif line == 'ERROR\r\n':
+                raise GSMInitializationError
+            elif time()-time_start > GSM_TIMEOUT:
+                raise GSMTimeoutError
         sleep(PAUSE_BEFORE_SERIAL_READ)
     
 def answer_call():
